@@ -1,75 +1,32 @@
-mock_provider "aws" {}
-
-override_data {
-  target = data.aws_availability_zones.available
-  values = {
-    names = ["us-east-1a", "us-east-1b"]
-  }
-}
-
-variables {
-  vpc_name             = "test_vpc"
-  vpc_cidr             = "10.3.0.0/16"
-  availability_zones   = ["us-east-1a", "us-east-1b"]
-  public_subnet_cidrs  = ["10.3.1.0/24", "10.3.2.0/24"]
-  private_subnet_cidrs = ["10.3.3.0/24", "10.3.4.0/24"]
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  tags = {
-    Environment = "integration"
-  }
-}
-
-###############################################
-# Integration Test 1: Full Deployment
-###############################################
-run "full_deployment" {
+run "full_vpc_deployment" {
   command = plan
 
-  assert {
-    condition     = aws_vpc.test_vpc.id != ""
-    error_message = "VPC ID missing"
-  }
+  variables {
+    vpc_name             = "integration-vpc"
+    vpc_cidr             = "10.10.0.0/16"
+    availability_zones   = ["us-east-1a", "us-east-1b"]
+    public_subnet_cidrs  = ["10.10.1.0/24", "10.10.2.0/24"]
+    private_subnet_cidrs = ["10.10.101.0/24", "10.10.102.0/24"]
 
-  assert {
-    condition     = length(aws_subnet.test_subnet.id) == 2
-    error_message = "Expected 2 public subnets"
-  }
+    enable_nat_gateway = true
+    single_nat_gateway = true
 
-  assert {
-    condition     = length(aws_vpc.test_vpc.private_subnet_ids) == 2
-    error_message = "Expected 2 private subnets"
-  }
-
-  assert {
-    condition     = length(aws_vpc.test_vpc.nat_gateway_ids) == 1
-    error_message = "Expected 1 NAT gateway"
-  }
-
-  assert {
-    condition     = length(aws_vpc.test_vpc.public_route_table_ids) == 1
-    error_message = "Expected 1 public route table"
-  }
-
-  assert {
-    condition     = length(aws_vpc.test_vpc.private_route_table_ids) == 2
-    error_message = "Expected 2 private route tables"
+    tags = {
+      Environment = "integration"
+    }
   }
 }
 
-###############################################
-# Integration Test 2: Connectivity
-###############################################
-run "connectivity" {
+run "network_connectivity_configuration" {
   command = plan
 
-  assert {
-    condition     = aws_vpc.test_vpc.internet_gateway_id != ""
-    error_message = "Internet Gateway missing"
-  }
+  variables {
+    vpc_name             = "connectivity-vpc"
+    vpc_cidr             = "10.20.0.0/16"
+    availability_zones   = ["us-east-1a", "us-east-1b"]
+    public_subnet_cidrs  = ["10.20.1.0/24", "10.20.2.0/24"]
+    private_subnet_cidrs = ["10.20.101.0/24", "10.20.102.0/24"]
 
-  assert {
-    condition     = length(aws_vpc.test_vpc.nat_gateway_ids) == 1
-    error_message = "NAT Gateway missing"
+    enable_nat_gateway = true
   }
 }

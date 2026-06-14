@@ -1,38 +1,26 @@
-# Terraform
-.terraform/
-.terraform.lock.hcl
-terraform.tfstate
-terraform.tfstate.backup
+# Local .terraform directories
+**/.terraform/*
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Terraform crash logs
 crash.log
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Sensitive files
-*.tfvars
-*.tfvars.json
+# CLI configuration files
+.terraformrc
+terraform.rc
 
-# Terraform test artifacts
-.terraform.test/
-terraform.tfplan
-*.plan
-
-# Local module builds
-dist/
-build/
-
-# IDE / Editor junk
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS junk
-.DS_Store
-Thumbs.db
-
-# Python virtual envs
-.venv/
-venv/
-__pycache__/
+# Keep the lock file
+!.terraform.lock.hcl
