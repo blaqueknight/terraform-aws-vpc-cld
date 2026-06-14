@@ -1,8 +1,6 @@
-# terraform-aws-vpc-cld
-terraform-challenge
 A reusable Terraform module for deploying an AWS VPC with configurable public and private subnets, Internet Gateway, NAT Gateway, and route tables.
 
-#Features
+## Features
 Configurable VPC CIDR
 Multiple public subnets
 Multiple private subnets
@@ -12,7 +10,7 @@ Public and private route tables
 Configurable DNS settings
 Common resource tagging
 
-#Example Usage
+## Example Usage
 module "vpc" {
   source = "../.."
 
@@ -38,7 +36,7 @@ module "vpc" {
   single_nat_gateway = true
 }
 
-#Inputs
+## Inputs
 vpc_name
 vpc_cidr
 availability_zones
@@ -50,7 +48,7 @@ enable_dns_hostnames
 enable_dns_support
 tags
 
-#Outputs
+## Outputs
 vpc_id
 vpc_cidr_block
 public_subnet_ids
