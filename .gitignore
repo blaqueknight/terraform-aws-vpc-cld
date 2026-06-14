@@ -12,3 +12,27 @@ override.tf.json
 # Sensitive files
 *.tfvars
 *.tfvars.json
+
+# Terraform test artifacts
+.terraform.test/
+terraform.tfplan
+*.plan
+
+# Local module builds
+dist/
+build/
+
+# IDE / Editor junk
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python virtual envs
+.venv/
+venv/
+__pycache__/
