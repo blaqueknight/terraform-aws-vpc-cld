@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-module "vpc" {
+module "aws_vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
 

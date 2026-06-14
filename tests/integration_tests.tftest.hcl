@@ -1,3 +1,7 @@
+module {
+  source = "../modules/vpc"
+}
+
 ###############################################
 # Integration Test 1: Full Deployment
 ###############################################
@@ -20,24 +24,23 @@ run "full_deployment" {
     }
   }
 
-  # Validate outputs exist
   assert {
-    condition     = module.vpc.vpc_id != ""
+    condition     = module.network.aws_vpc.vpc_id != ""
     error_message = "VPC ID output missing"
   }
 
   assert {
-    condition     = length(module.vpc.public_subnets) == 2
+    condition     = length(module.network.aws_vpc.public_subnets) == 2
     error_message = "Expected 2 public subnets"
   }
 
   assert {
-    condition     = length(module.vpc.private_subnets) == 2
+    condition     = length(module.network.aws_vpc.private_subnets) == 2
     error_message = "Expected 2 private subnets"
   }
 
   assert {
-    condition     = length(module.vpc.nat_gateways) == 1
+    condition     = length(module.network.aws_vpc.nat_gateway_ids) == 1
     error_message = "Expected 1 NAT gateway"
   }
 }
@@ -62,21 +65,18 @@ run "route_connectivity" {
     tags = {}
   }
 
-  # Public route tables must have IGW route
   assert {
-    condition     = length(module.vpc.public_route_table_ids) == 2
+    condition     = length(module.network.aws_vpc.public_route_table_ids) == 2
     error_message = "Expected 2 public route tables"
   }
 
-  # Private route tables must exist
   assert {
-    condition     = length(module.vpc.private_route_table_ids) == 2
+    condition     = length(module.network.aws_vpc.private_route_table_ids) == 2
     error_message = "Expected 2 private route tables"
   }
 
-  # NAT gateway must exist for private subnets
   assert {
-    condition     = length(module.vpc.nat_gateways) == 1
+    condition     = length(module.network.aws_vpc.nat_gateway_ids) == 1
     error_message = "Expected 1 NAT gateway for private subnets"
   }
 }

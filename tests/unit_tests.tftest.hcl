@@ -1,3 +1,6 @@
+module {
+  source = "../modules/vpc"
+}
 run "minimal_vpc" {
   command = plan
 
@@ -18,10 +21,11 @@ run "minimal_vpc" {
   }
 
   assert {
-    condition     = module.vpc.vpc_cidr_block == "10.0.0.0/16"
+    condition     = module.aws_vpc.vpc_cidr_block == "10.0.0.0/16"
     error_message = "VPC CIDR block incorrect"
   }
 }
+
 run "multi_az" {
   command = plan
 
@@ -39,10 +43,11 @@ run "multi_az" {
   }
 
   assert {
-    condition     = length(module.vpc.public_subnets) == 2
+    condition     = length(module.aws_vpc.public_subnets) == 2
     error_message = "Expected 2 public subnets"
   }
 }
+
 run "nat_single" {
   command = plan
 
@@ -58,10 +63,11 @@ run "nat_single" {
   }
 
   assert {
-    condition     = length(module.vpc.nat_gateways) == 1
+    condition     = length(module.aws_vpc.nat_gateway_ids) == 1
     error_message = "Expected 1 NAT gateway"
   }
 }
+
 run "nat_disabled" {
   command = plan
 
@@ -77,10 +83,11 @@ run "nat_disabled" {
   }
 
   assert {
-    condition     = length(module.vpc.nat_gateways) == 0
+    condition     = length(module.aws_vpc.nat_gateway_ids) == 0
     error_message = "NAT gateways should not be created"
   }
 }
+
 run "invalid_cidr" {
   command = plan
 
@@ -97,6 +104,7 @@ run "invalid_cidr" {
 
   expect_failures = ["cidr"]
 }
+
 run "tagging" {
   command = plan
 
@@ -116,7 +124,7 @@ run "tagging" {
   }
 
   assert {
-    condition     = module.vpc.tags["Owner"] == "Corey"
+    condition     = module.aws_vpc.tags["Owner"] == "Corey"
     error_message = "Tag Owner not applied"
   }
 }
