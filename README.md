@@ -1,14 +1,14 @@
 A reusable Terraform module for deploying an AWS VPC with configurable public and private subnets, Internet Gateway, NAT Gateway, and route tables.
 
 ## Features
-Configurable VPC CIDR
-Multiple public subnets
-Multiple private subnets
-Internet Gateway
-Optional NAT Gateway
-Public and private route tables
-Configurable DNS settings
-Common resource tagging
+-Configurable VPC CIDR
+-Multiple public subnets
+-Multiple private subnets
+-Internet Gateway
+-Optional NAT Gateway
+-Public and private route tables
+-Configurable DNS settings
+-Common resource tagging
 
 ## Example Usage
 module "vpc" {
@@ -37,23 +37,23 @@ module "vpc" {
 }
 
 ## Inputs
-vpc_name
-vpc_cidr
-availability_zones
-public_subnet_cidrs
-private_subnet_cidrs
-enable_nat_gateway
-single_nat_gateway
-enable_dns_hostnames
-enable_dns_support
-tags
+-vpc_name
+-vpc_cidr
+-availability_zones
+-public_subnet_cidrs
+-private_subnet_cidrs
+-enable_nat_gateway
+-single_nat_gateway
+-enable_dns_hostnames
+-enable_dns_support
+-tags
 
 ## Outputs
-vpc_id
-vpc_cidr_block
-public_subnet_ids
-private_subnet_ids
-nat_gateway_ids
-internet_gateway_id
-public_route_table_ids
-private_route_table_ids
+-vpc_id
+-vpc_cidr_block
+-public_subnet_ids
+-private_subnet_ids
+-nat_gateway_ids
+-internet_gateway_id
+-public_route_table_ids
+-private_route_table_ids
