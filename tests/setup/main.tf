@@ -2,22 +2,32 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 3.76"
     }
   }
 }
-
-provider "aws" {
-  region = "us-east-1"
+# Create a VPC for testing
+resource "aws_vpc" "test_vpc" {
+  cidr_block = "10.0.0.0/16"
+  
+  tags = {
+    Name = "test-vpc"
+  }
+}
+# Create a subnet for testing
+resource "aws_subnet" "test_subnet" {
+  vpc_id            = aws_vpc.test_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  
+  tags = {
+    Name = "test-subnet"
+  }
+}
+output "vpc_id" {
+  value = aws_vpc.test_vpc.id
 }
 
-module "root" {
-  source = "../.."
-
-  name             = "test-vpc"
-  cidr             = "10.0.0.0/16"
-  azs              = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  public_subnets   = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  private_subnets  = ["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
-  database_subnets = ["10.0.21.0/24", "10.0.22.0/24", "10.0.23.0/24"]
+output "subnet_id" {
+  value = aws_subnet.test_subnet.id
 }

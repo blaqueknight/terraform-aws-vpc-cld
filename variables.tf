@@ -1,70 +1,64 @@
-variable "region" {
+variable "vpc_name" {
+  description = "Name of the VPC"
   type        = string
-  description = "AWS region to deploy the VPC"
-  default     = "us-east-1"
+  default     = "corey-vpc-5_3"
 }
 
-variable "name" {
+variable "vpc_cidr" {
+  description = "CIDR block for VPC"
   type        = string
-  description = "Name prefix for the VPC"
-}
-
-variable "cidr" {
-  type        = string
-  description = "CIDR block for the VPC"
+  default     = "10.0.0.0/16"
 
   validation {
-    condition     = can(regex("^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$", var.cidr))
-    error_message = "cidr must be a valid IPv4 CIDR, e.g. 10.0.0.0/16."
+    condition     = can(cidrhost(var.vpc_cidr, 0))
+    error_message = "Must be valid CIDR."
   }
 }
 
-variable "azs" {
+variable "availability_zones" {
+  description = "List of availability zones"
   type        = list(string)
-  description = "Availability zones to use for subnets"
+  default     = ["us-west-1a", "us-west-1c"]
 }
 
-variable "public_subnets" {
-  type        = list(string)
+variable "public_subnet_cidrs" {
   description = "CIDRs for public subnets"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
-variable "private_subnets" {
-  type        = list(string)
+variable "private_subnet_cidrs" {
   description = "CIDRs for private subnets"
-}
-
-variable "database_subnets" {
   type        = list(string)
-  description = "CIDRs for database subnets"
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
 variable "enable_nat_gateway" {
+  description = "Enable NAT Gateway"
   type        = bool
-  description = "Whether to create NAT gateways for private subnets"
   default     = true
 }
 
 variable "single_nat_gateway" {
+  description = "Single NAT gateway"
   type        = bool
-  description = "Use a single NAT gateway (true) or one per AZ (false)"
   default     = true
 }
 
 variable "enable_dns_hostnames" {
+  description = "Enable DNS hostnames"
   type        = bool
-  description = "Enable DNS hostnames in the VPC"
   default     = true
 }
 
 variable "enable_dns_support" {
+  description = "Enable DNS support"
   type        = bool
-  description = "Enable DNS support in the VPC"
   default     = true
 }
 
 variable "tags" {
+  description = "Common tags"
   type        = map(string)
-  description = "Tags to apply to VPC resources"
   default     = {}
 }
