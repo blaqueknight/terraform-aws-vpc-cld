@@ -11,6 +11,7 @@ A reusable Terraform module for deploying an AWS VPC with configurable public an
 - Common resource tagging
 
 ## Example Usage
+```hcl
 module "vpc" {
   source = "../.."
 
@@ -35,6 +36,7 @@ module "vpc" {
   enable_nat_gateway = true
   single_nat_gateway = true
 }
+```
 
 ## Inputs
 - vpc_name
